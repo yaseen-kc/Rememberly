@@ -1,26 +1,16 @@
 import mongoose from "mongoose";
-const { Schema, Types } = mongoose;
+const { Schema, Types, model } = mongoose;
 
 mongoose
-	.connect("mongodb+srv://admin:FfaClO9itsBVBXmF@cluster0.hhiek.mongodb.net/")
-	.catch((error) => console.error(error));
+  .connect(
+    "mongodb+srv://admin:FfaClO9itsBVBXmF@cluster0.hhiek.mongodb.net/remberly"
+  )
+  .then(() => console.log("Database connected successfully"))
+  .catch((error) => console.error("Database connection error:", error));
 
-const usersSchema = new Schema({
-	username: { type: String, required: true, unique: true },
-	password: { type: String, required: true },
+const userSchema = new Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
-const contentTypes = ["images", "video", "article", "audio"];
-
-const contentSchema = new Schema({
-	link: { type: String, requied: true },
-	type: { type: String, enum: contentTypes, required: true },
-	title: { type: String, required: true },
-	tags: [{ type: Types.ObjectId, ref: "Tag" }],
-	userId: { type: Types.ObjectId, ref: "User", required: true },
-});
-
-const linkSchema = new mongoose.Schema({
-	hash: { type: String, required: true },
-	userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-});
+export const UserModel = model("User");
