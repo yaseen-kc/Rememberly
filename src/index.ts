@@ -9,7 +9,7 @@ export const app = express();
 
 app.use(express.json());
 
-app.post("/api/v1/signup", async (req, res) => {
+app.post("/api/v1/signup", async (req, res): Promise<any> => {
   try {
     // Validate the input data
     const validatedData = signUpValidation.parse(req.body);
@@ -62,3 +62,7 @@ app.delete("api/v1/content", (req, res) => {});
 app.post("/api/v1/brain/share", (req, res) => {});
 
 app.get("api/v1/brain/:shareLink", (req, res) => {});
+
+app.listen(3000, () => {
+  console.log("Server Started");
+});
