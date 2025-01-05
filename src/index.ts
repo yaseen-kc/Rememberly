@@ -6,8 +6,8 @@ import { z } from "zod";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import { UserModel } from "./db";
-import { signUpValidation } from "./validations/authValidation";
+import { Content, UserModel } from "./db";
+import { signUpValidation } from "./authValidation";
 
 export const app = express();
 
@@ -92,15 +92,34 @@ app.post("/api/v1/signin", async (req, res): Promise<any> => {
   }
 });
 
-app.post("/api/v1/content", (req, res) => {});
+app.post("/api/v1/content", async (req, res): Promise<any> => {
+  try {
+    const link = req.body.link;
+    const type = req.body.type;
+    const title = req.body.title;
+    await Content.create({
+      type: type,
+      link: link,
+      title: title,
+      userId: req.userId,
+      tags: [],
+    });
 
-app.get("api/v1/content", (req, res) => {});
+    res.status(201).json({
+      message: "Content added successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
-app.delete("api/v1/content", (req, res) => {});
+app.get("api/v1/content", (req, res) => { });
 
-app.post("/api/v1/brain/share", (req, res) => {});
+app.delete("api/v1/content", (req, res) => { });
 
-app.get("api/v1/brain/:shareLink", (req, res) => {});
+app.post("/api/v1/brain/share", (req, res) => { });
+
+app.get("api/v1/brain/:shareLink", (req, res) => { });
 
 app.listen(3000, () => {
   console.log("Server Started");
