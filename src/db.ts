@@ -30,5 +30,5 @@ const contentSchema = new Schema({
 });
 
 export const UserModel = model("User", userSchema);
-export const Tag = model("Tag", tagSchema);
-export const Content = model("Content", contentSchema);
+export const TagModel = model("Tag", tagSchema);
+export const ContentModel = model("Content", contentSchema);

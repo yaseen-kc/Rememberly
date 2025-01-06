@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import * as dotenv from "dotenv";
-import { Content, UserModel } from "./db";
+import { ContentModel, UserModel } from "./db";
 import { signUpValidation } from "./authValidation";
 import { userMiddleware } from "./middleware";
 
@@ -87,7 +87,7 @@ app.post("/api/v1/content", userMiddleware, async (req, res): Promise<any> => {
   try {
     const { link, type, title } = req.body;
 
-    await Content.create({
+    await ContentModel.create({
       type: type,
       link: link,
       title: title,
@@ -103,7 +103,14 @@ app.post("/api/v1/content", userMiddleware, async (req, res): Promise<any> => {
   }
 });
 
-app.get("/api/v1/content", (req, res) => {
+app.get("/api/v1/content", userMiddleware, async (req, res) => {
+  const userId = req.userId;
+  const content = await ContentModel.find({
+    userId: userId
+  }).populate("userId", "username")
+  res.json({
+    content
+  })
 });
 
 app.delete("/api/v1/content", (req, res) => {
