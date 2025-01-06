@@ -103,17 +103,51 @@ app.post("/api/v1/content", userMiddleware, async (req, res): Promise<any> => {
   }
 });
 
-app.get("/api/v1/content", userMiddleware, async (req, res) => {
-  const userId = req.userId;
-  const content = await ContentModel.find({
-    userId: userId
-  }).populate("userId", "username")
-  res.json({
-    content
-  })
+app.get("/api/v1/content", userMiddleware, async (req, res): Promise<any> => {
+  try {
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const content = await ContentModel.find({ userId })
+      .populate("userId", "username");
+
+    if (!content.length) {
+      return res.status(404).json({ success: false, message: "No content found" });
+    }
+
+    return res.json({
+      success: true,
+      content
+    });
+
+  } catch (error) {
+    return res.status(500).json({ error: "Failed to fetch content" });
+  }
 });
 
-app.delete("/api/v1/content", (req, res) => {
+app.delete("/api/v1/content", async (req, res): Promise<any> => {
+  try {
+    const { contentId } = req.body;
+
+    if (!contentId) {
+      return res.status(400).json({ error: "Content ID is required" })
+    }
+
+    await ContentModel.deleteMany({
+      contentId,
+      userId: req.userId
+    })
+
+    res.status(200).json({ message: "Content deleted successfully" })
+
+  } catch (error) {
+
+    return res.status(500).json({ error: "Failed to delete content" });
+
+  }
 });
 
 app.post("/api/v1/brain/share", (req, res) => {
