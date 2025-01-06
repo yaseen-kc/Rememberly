@@ -136,6 +136,16 @@ app.delete("/api/v1/content", async (req, res): Promise<any> => {
       return res.status(400).json({ error: "Content ID is required" })
     }
 
+    const content = await ContentModel.findOne({ contentId })
+
+    if (!content) {
+      return res.status(400).json({ error: "Content not found" })
+    }
+
+    if (content.userId !== req.userId) {
+      return res.status(403).json({ error: "You do not have permission to delete this content" });
+    }
+
     await ContentModel.deleteMany({
       contentId,
       userId: req.userId
