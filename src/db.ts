@@ -15,9 +15,10 @@ const userSchema = new Schema({
   password: { type: String, required: true },
 });
 
-const tagSchema = new Schema({
-  title: { type: String, required: true, unique: true },
-});
+// const tagSchema = new Schema({
+//   title: { type: String, required: true, unique: true },
+// });
+// export const TagModel = model("Tag", tagSchema);
 
 const contentTypes = ["image", "video", "article", "audio"];
 
@@ -29,6 +30,11 @@ const contentSchema = new Schema({
   userId: { type: Types.ObjectId, ref: "User", required: true },
 });
 
+const LinkSchema = new mongoose.Schema({
+  hash: String,
+  userId: { type: Types.ObjectId, ref: "User", required: true, unique: true },
+})
+
 export const UserModel = model("User", userSchema);
-export const TagModel = model("Tag", tagSchema);
 export const ContentModel = model("Content", contentSchema);
+export const LinkModel = model("Links", LinkSchema)

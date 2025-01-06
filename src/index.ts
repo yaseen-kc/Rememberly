@@ -3,9 +3,10 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 import * as dotenv from "dotenv";
-import { ContentModel, UserModel } from "./db";
+import { ContentModel, LinkModel, UserModel } from "./db";
 import { signUpValidation } from "./authValidation";
 import { userMiddleware } from "./middleware";
+import { generateRandomHash } from "./utils";
 
 // Load environment variables
 dotenv.config();
@@ -160,11 +161,47 @@ app.delete("/api/v1/content", async (req, res): Promise<any> => {
   }
 });
 
-app.post("/api/v1/brain/share", (req, res) => {
+app.post("/api/v1/brain/share", userMiddleware, async (req, res): Promise<any> => {
+  try {
+    const { share } = req.body
+    if (share) {
+      const existingLink = await LinkModel.findOne({
+        userId: req.userId
+      })
+
+      if (existingLink) {
+        return res.status(200).json({ hash: existingLink.hash })
+      }
+
+      const hash = generateRandomHash(10)
+
+      await LinkModel.create({ userId: req.userId, hash })
+
+      return res.status(201).json({ hash })
+
+    } else {
+      const deletedLink = await LinkModel.deleteOne({ userId: req.userId });
+
+      if (deletedLink.deletedCount > 0) {
+        return res.status(200).json({ message: "Link removed successfully" });
+      }
+
+      return res.status(404).json({ message: "No link found to remove" });
+    }
+  } catch (error) {
+
+    console.error("Error in /brain/share endpoint:", error);
+
+    return res.status(500).json({ message: "An error occurred while processing your request" });
+
+  }
 });
 
-app.get("/api/v1/brain/:shareLink", (req, res) => {
+
+app.get("/api/v1/brain/:shareLink", async (req, res): Promise<any> => {
+
 });
+
 
 // Start the server
 app.listen(3000, () => {
