@@ -4,7 +4,9 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGO_URL!)
+  .connect(process.env.MONGO_URL!, {
+    dbName: 'rememberly'
+  })
   .then(() => console.log("Database connected successfully"))
   .catch((error) => console.error("Database connection error:", error));
 
