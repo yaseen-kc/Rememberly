@@ -199,8 +199,39 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res): Promise<any> =
 
 
 app.get("/api/v1/brain/:shareLink", async (req, res): Promise<any> => {
+  try {
+    const { shareLink: hash } = req.params;
 
+    if (!hash) {
+      return res.status(400).json({ message: "Share link is required" });
+    }
+
+    const link = await LinkModel.findOne({ hash });
+
+    if (!link) {
+      return res.status(404).json({ message: "Invalid share link" });
+    }
+
+    const content = await ContentModel.find({ userId: link.userId });
+
+    const user = await UserModel.findById(link.userId);
+
+    if (!user) {
+      return res.status(500).json({
+        message: "User not found, this error should ideally not happen",
+      });
+    }
+
+    return res.status(200).json({
+      username: user.username,
+      content,
+    });
+  } catch (error) {
+    console.error("Error in /brain/:shareLink endpoint:", error);
+    return res.status(500).json({ message: "An error occurred while processing your request" });
+  }
 });
+
 
 
 // Start the server
