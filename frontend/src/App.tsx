@@ -5,31 +5,19 @@ import { ShareIcon } from "./icons/ShareIcon";
 
 function App() {
   return (
-    <>
+    <div>
       <Button
-        title={"Share"}
-        size="lg"
-        startIcon={<PlusIcon size={"lg"} />}
-        endIcon={<ShareIcon size={"lg"} />}
-        variant={"primary"}
+        varient="primary"
+        text="Add content"
+        startIcon={<PlusIcon />}
       ></Button>
 
       <Button
-        variant={"secondary"}
-        startIcon={<PlusIcon size={"lg"} />}
-        endIcon={<ShareIcon size={"lg"} />}
-        size="lg"
-        title={"Share"}
+        varient="secondary"
+        text="Share Brain"
+        startIcon={<ShareIcon />}
       ></Button>
-
-      <Button
-        variant={"primary"}
-        startIcon={<PlusIcon size={"sm"} />}
-        endIcon={<ShareIcon size={"sm"} />}
-        size="sm"
-        title={"Share"}
-      ></Button>
-    </>
+    </div>
   );
 }
 
