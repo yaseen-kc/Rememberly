@@ -31,7 +31,7 @@ export function Button({
         varientClasses[varient] +
         " " +
         defaultStyles +
-        `${fullWidth ? "w-full flex justify-center items-center" : ""}${
+        `${fullWidth ? " w-full flex justify-center items-center" : ""}${
           laoding ? "opacity-45" : ""
         }`
       }
