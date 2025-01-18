@@ -8,11 +8,13 @@ import { CreateContentModel } from "./components/CreateContentModel";
 import { Sidebar } from "./components/Sidebar";
 import { PlusIcon } from "./icons/PlusIcon";
 import { ShareIcon } from "./icons/ShareIcon";
+import Signup from "./pages/Signup";
 
 function App() {
   const [modelOpen, setModelOpen] = useState(false);
   return (
     <div>
+      <Signup />
       <Sidebar />
       <div className="p-4 ml-72 min-h-screen bg-gray-100">
         <CreateContentModel
