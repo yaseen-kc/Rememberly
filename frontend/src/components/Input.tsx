@@ -1,6 +1,7 @@
 interface InputProps {
   placeholder: string;
   reference?: any;
+  type: string;
 }
 
 export function Input({ placeholder, reference }: InputProps) {

@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import cors from 'cors';
 import { z } from "zod";
 import * as dotenv from "dotenv";
 import { ContentModel, LinkModel, UserModel } from "./db";
@@ -14,6 +15,8 @@ dotenv.config();
 // Initialize the app
 export const app = express();
 app.use(express.json());
+app.use(cors());
+
 
 // Routes
 
