@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import Signup from "./Signup";
 import { Sidebar } from "../components/Sidebar";
 import { CreateContentModel } from "../components/CreateContentModel";
