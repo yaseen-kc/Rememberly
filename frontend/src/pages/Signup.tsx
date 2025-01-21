@@ -45,7 +45,7 @@ export default function Signup() {
           <Button
             onClick={signup}
             loading={loading}
-            varient="primary"
+            variant="primary"
             text="Signup"
             fullWidth={true}
           />

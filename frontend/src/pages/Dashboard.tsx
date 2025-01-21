@@ -25,13 +25,13 @@ export function Dashboard() {
             onClick={() => {
               setModelOpen(true);
             }}
-            varient="primary"
+            variant="primary"
             text="Add content"
             startIcon={<PlusIcon />}
           ></Button>
 
           <Button
-            varient="secondary"
+            variant="secondary"
             text="Share Brain"
             startIcon={<ShareIcon />}
           ></Button>
